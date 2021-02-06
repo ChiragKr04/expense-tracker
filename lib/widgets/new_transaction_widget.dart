@@ -44,6 +44,7 @@ class _NewTransactionState extends State<NewTransaction> {
           children: [
             TextField(
               style: TextStyle(
+                fontWeight: FontWeight.normal,
                 fontSize: 17,
               ),
               decoration: InputDecoration(
@@ -55,6 +56,7 @@ class _NewTransactionState extends State<NewTransaction> {
             TextField(
               style: TextStyle(
                 fontSize: 17,
+                fontWeight: FontWeight.normal,
               ),
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -68,11 +70,12 @@ class _NewTransactionState extends State<NewTransaction> {
             ),
             Container(
               margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
+              height: 40,
+              /*decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(10),
+                  Radius.circular(30),
                 ),
-                gradient: LinearGradient(
+                */ /*gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
                   colors: [
@@ -80,13 +83,13 @@ class _NewTransactionState extends State<NewTransaction> {
                     Colors.blueAccent,
                     Colors.blue[600]
                   ],
-                ),
-              ),
-              child: RaisedButton(
+                ),*/ /*
+              ),*/
+              child: FlatButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                color: Colors.transparent,
+                color: Theme.of(context).accentColor,
                 onPressed: () => submitData(),
                 child: Text(
                   "Add new Expense",

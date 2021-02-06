@@ -1,3 +1,4 @@
+import 'package:assignment_app/widgets/charts.dart';
 import 'package:flutter/material.dart';
 
 import './models/transaction_model.dart';
@@ -51,11 +52,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var amountController = TextEditingController();
-
-  var nameController = TextEditingController();
-
   final List<Transaction> _transactionList = [];
+
+  List<Transaction> get _recentTransaction {
+    return _transactionList.where((element) {
+      return element.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
   void _addNewTransaction(String name, double amount) {
     print(name);
@@ -73,14 +80,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _newTransactionPopup(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: (_) {
-          return GestureDetector(
-            onTap: () => {},
-            child: NewTransaction(_addNewTransaction),
-            behavior: HitTestBehavior.opaque,
-          );
-        });
+      context: context,
+      builder: (_) {
+        return GestureDetector(
+          onTap: () => {},
+          child: NewTransaction(_addNewTransaction),
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
   }
 
   Widget build(BuildContext context) {
@@ -100,25 +108,15 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () => _newTransactionPopup(context),
         child: Icon(
           Icons.add,
+          color: Colors.white,
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            colors: [
-              Colors.green[700],
-              Colors.deepPurple,
-              Colors.pink,
-              Colors.redAccent,
-              Colors.orange[700],
-            ],
-          ),
-        ),
+        color: Colors.lightBlue,
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Charts(_recentTransaction),
               TransactionList(_transactionList),
             ],
           ),
