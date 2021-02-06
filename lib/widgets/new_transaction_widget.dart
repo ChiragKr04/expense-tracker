@@ -24,10 +24,14 @@ class _NewTransactionState extends State<NewTransaction> {
     }
 
     print(nameController.text);
+    // using 'widget.' we can access methods/variables other stuff of our StatefulWidget class
+    // without 'widget.' we cant access the methods/variables inside State class
     widget.newTransaction(
       name,
       amount,
     );
+
+    Navigator.of(context).pop();
   }
 
   Widget build(BuildContext context) {

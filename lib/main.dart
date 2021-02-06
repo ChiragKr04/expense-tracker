@@ -14,7 +14,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'gotham'),
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        accentColor: Colors.orange,
+        fontFamily: 'gotham',
+        //setting custom theme of text which can be used globally
+        textTheme: ThemeData.light().textTheme.copyWith(
+              subtitle1: TextStyle(
+                fontFamily: "gotham",
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        //setting custom theme of appbar which can be used globally
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                  fontFamily: 'sfpro',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 19,
+                  color: Colors.white,
+                ),
+              ),
+        ),
+      ),
       title: 'Flutter App',
       home: MyHomePage(),
     );
@@ -86,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
             colors: [
-              Colors.indigo[700],
+              Colors.green[700],
               Colors.deepPurple,
               Colors.pink,
               Colors.redAccent,
@@ -97,7 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              NewTransaction(_addNewTransaction),
               TransactionList(_transactionList),
             ],
           ),
