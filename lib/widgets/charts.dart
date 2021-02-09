@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 class Charts extends StatelessWidget {
   final List<Transaction> recentTransaction;
   Charts(this.recentTransaction);
-  double totalSum = 0.0;
 
   List<Map<String, Object>> get groupedExpense {
     return List.generate(7, (index) {
@@ -28,10 +27,10 @@ class Charts extends StatelessWidget {
       print(totalSum);
 
       return {
-        'day': DateFormat.E().format(weekDay).substring(0, 1),
+        'day': DateFormat.E().format(weekDay).substring(0, 3),
         'amount': totalSum,
       };
-    });
+    }).reversed.toList();
   }
 
   double get maxSpending {
@@ -55,7 +54,7 @@ class Charts extends StatelessWidget {
               child: ChartsBar(
                 data['day'],
                 data['amount'],
-                totalSum == 0.0
+                maxSpending == 0.0
                     ? 0.0
                     : (data['amount'] as double) / maxSpending,
               ),

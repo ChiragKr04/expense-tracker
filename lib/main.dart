@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.purple,
         accentColor: Colors.orange,
         fontFamily: 'gotham',
         //setting custom theme of text which can be used globally
@@ -64,17 +64,23 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String name, double amount) {
+  void _addNewTransaction(String name, double amount, DateTime date) {
     print(name);
     print(amount);
     final newTransactionObject = Transaction(
       DateTime.now().toString(),
       name,
       amount,
-      DateTime.now(),
+      date,
     );
     setState(() {
       _transactionList.add(newTransactionObject);
+    });
+  }
+
+  void deleteListItem(String id) {
+    setState(() {
+      _transactionList.removeWhere((element) => element.id == id);
     });
   }
 
@@ -112,12 +118,15 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Container(
-        color: Colors.lightBlue,
+        color: Colors.grey[400],
         child: SingleChildScrollView(
           child: Column(
             children: [
               Charts(_recentTransaction),
-              TransactionList(_transactionList),
+              TransactionList(
+                _transactionList,
+                deleteListItem,
+              ),
             ],
           ),
         ),

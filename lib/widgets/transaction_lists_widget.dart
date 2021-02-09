@@ -4,14 +4,14 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactionList;
-
-  TransactionList(this.transactionList);
+  final Function removeListItem;
+  TransactionList(this.transactionList, this.removeListItem);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 540,
+        height: 400,
         child: transactionList.isEmpty
             ? Column(
                 children: [
@@ -46,6 +46,57 @@ class TransactionList extends StatelessWidget {
             : ListView.builder(
                 itemBuilder: (ctx, index) {
                   return Card(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        transactionList[index].name,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      leading: CircleAvatar(
+                        radius: 30,
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: FittedBox(
+                            child: Text(
+                              "₹${transactionList[index].amount.toStringAsFixed(2)}",
+                            ),
+                          ),
+                        ),
+                      ),
+                      subtitle: Text(
+                        DateFormat.yMMMMd().format(
+                          transactionList[index].date,
+                        ),
+                        style: TextStyle(
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () =>
+                            removeListItem(transactionList[index].id),
+                      ),
+                    ),
+                  );
+                },
+                itemCount: transactionList
+                    .length, // give length of how long to print lists
+              ),
+      ),
+    );
+  }
+}
+
+// Card Widget of list
+
+/*
+*  Card(
                     margin: EdgeInsets.all(5),
                     elevation: 7,
                     color: Colors.white,
@@ -94,12 +145,4 @@ class TransactionList extends StatelessWidget {
                         )
                       ],
                     ),
-                  );
-                },
-                itemCount: transactionList
-                    .length, // give length of how long to print lists
-              ),
-      ),
-    );
-  }
-}
+                  );*/

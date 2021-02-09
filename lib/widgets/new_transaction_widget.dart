@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function newTransaction;
@@ -14,11 +15,14 @@ class _NewTransactionState extends State<NewTransaction> {
 
   final amountController = TextEditingController();
 
+  DateTime selectedDate;
+
   void submitData() {
     var name = nameController.text;
     var amount = double.parse(amountController.text);
+    var date = selectedDate;
 
-    if (name.isEmpty || amount <= 0) {
+    if (name.isEmpty || amount <= 0 || selectedDate == null) {
       print("Name Empty or Amount is 0");
       return;
     }
@@ -29,9 +33,26 @@ class _NewTransactionState extends State<NewTransaction> {
     widget.newTransaction(
       name,
       amount,
+      date,
     );
 
     Navigator.of(context).pop();
+  }
+
+  void _pickupDate() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        selectedDate = pickedDate;
+      });
+    });
   }
 
   Widget build(BuildContext context) {
@@ -69,22 +90,35 @@ class _NewTransactionState extends State<NewTransaction> {
               //onChanged: (val) => amountInput = val,
             ),
             Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      selectedDate == null
+                          ? "No date selected!"
+                          : "Selected date: ${DateFormat('dd/MM/yy').format(selectedDate)}",
+                      style: TextStyle(
+                        fontFamily: "gotham",
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: _pickupDate,
+                    child: Text(
+                      "Choose date",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Container(
               margin: EdgeInsets.all(10),
               height: 40,
-              /*decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(30),
-                ),
-                */ /*gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: [
-                    Colors.pink[700],
-                    Colors.blueAccent,
-                    Colors.blue[600]
-                  ],
-                ),*/ /*
-              ),*/
               child: FlatButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
