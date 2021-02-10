@@ -56,84 +56,91 @@ class _NewTransactionState extends State<NewTransaction> {
   }
 
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 10,
-      child: Container(
-        margin: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 17,
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 10,
+        child: Container(
+          margin: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 17,
+                ),
+                decoration: InputDecoration(
+                  labelText: "Name",
+                ),
+                controller: nameController,
+                //onChanged: (val) => nameInput = val,
               ),
-              decoration: InputDecoration(
-                labelText: "Name",
+              TextField(
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.normal,
+                ),
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Amount",
+                ),
+                controller: amountController,
+                onSubmitted: (_) => submitData(),
+                // on submit gives string we can use '_' to get value but dont require it
+                // or full 'var' to use in some sense
+                //onChanged: (val) => amountInput = val,
               ),
-              controller: nameController,
-              //onChanged: (val) => nameInput = val,
-            ),
-            TextField(
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.normal,
-              ),
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Amount",
-              ),
-              controller: amountController,
-              onSubmitted: (_) => submitData(),
-              // on submit gives string we can use '_' to get value but dont require it
-              // or full 'var' to use in some sense
-              //onChanged: (val) => amountInput = val,
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      selectedDate == null
-                          ? "No date selected!"
-                          : "Selected date: ${DateFormat('dd/MM/yy').format(selectedDate)}",
-                      style: TextStyle(
-                        fontFamily: "gotham",
-                        fontSize: 17,
+              Container(
+                height: 70,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        selectedDate == null
+                            ? "No date selected!"
+                            : "Selected date: ${DateFormat('dd/MM/yy').format(selectedDate)}",
+                        style: TextStyle(
+                          fontFamily: "gotham",
+                          fontSize: 17,
+                        ),
                       ),
                     ),
-                  ),
-                  FlatButton(
-                    onPressed: _pickupDate,
-                    child: Text(
-                      "Choose date",
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
+                    FlatButton(
+                      onPressed: _pickupDate,
+                      child: Text(
+                        "Choose date",
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-              height: 40,
-              child: FlatButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                    )
+                  ],
                 ),
-                color: Theme.of(context).accentColor,
-                onPressed: () => submitData(),
-                child: Text(
-                  "Add new Expense",
-                  style: TextStyle(
-                    color: Colors.white,
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                height: 40,
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => submitData(),
+                  child: Text(
+                    "Add new Expense",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
