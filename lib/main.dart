@@ -1,4 +1,5 @@
 import 'package:assignment_app/widgets/charts.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import './models/transaction_model.dart';
@@ -108,13 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
-
-    final isLandscape = mediaQuery.orientation == Orientation.landscape;
-
-    // My App BAr
-    final appBar = AppBar(
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
       actions: [
         IconButton(
           icon: Icon(Icons.add),
@@ -124,6 +120,18 @@ class _MyHomePageState extends State<MyHomePage> {
       elevation: 100,
       title: Text("My New App"),
     );
+  }
+
+  Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+
+    final isLandscape =
+        mediaQuery.orientation == Orientation.landscape && kIsWeb
+            ? false
+            : true;
+
+    // My App BAr
+    final appBar = _buildAppBar();
 
     // My Chart Widget
     final chartWidget = Container(
@@ -161,6 +169,17 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Container(
             child: Column(
               children: [
+                // Checking if phone is in landscape mode (NO?) we show smaller chart with 0.3 height
+                if (!isLandscape)
+                  Container(
+                    height: (mediaQuery.size.height -
+                            appBar.preferredSize.height -
+                            mediaQuery.padding.top) *
+                        0.3,
+                    child: Charts(_recentTransaction),
+                  ),
+                // Checking if phone is in landscape mode (NO?) we show transaction with chart also
+                if (!isLandscape) transactionListWidget,
                 // If we are in landscape mode we show toggle for show chart
                 if (isLandscape)
                   Row(
@@ -179,17 +198,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Checking value of landscape(true?) and show chart(true?) then with toggle show one at one time
                 if (isLandscape)
                   _showChart ? chartWidget : transactionListWidget,
-                // Checking if phone is in landscape mode (NO?) we show smaller chart with 0.3 height
-                if (!isLandscape)
-                  Container(
-                    height: (mediaQuery.size.height -
-                            appBar.preferredSize.height -
-                            mediaQuery.padding.top) *
-                        0.3,
-                    child: Charts(_recentTransaction),
-                  ),
-                // Checking if phone is in landscape mode (NO?) we show transaction with chart also
-                if (!isLandscape) transactionListWidget,
               ],
             ),
           ),
